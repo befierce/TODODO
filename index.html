@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO APP</title>
+    <style>
+        .container {
+            width: 500px;
+            height: 80px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 10px; /* Add some margin between containers */
+        }
+    </style>
+</head>
+
+<body>
+    <h1> TODO </h1>
+    <form id= "todoform">
+        <div class="container">
+            <label for="Todotask">ToDo</label>
+            <input type="text" id="Todotask" required>
+            <label for="Details">Details</label>
+            <input type="text" id="Details" required>
+            <input type="submit" value="Submit">
+        </div>
+
+        <div class="container">
+            <ul id = "tasks" class= "list-of-todo">
+                <!--                      -->
+            </ul>
+        </div>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
