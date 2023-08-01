@@ -1,58 +1,77 @@
+window.addEventListener("DOMContentLoaded", () => {
+    fetchToDoData();
+});
+
+
 var form = document.getElementById("todoform");
-form.addEventListener('submit', submitDetails);
+form.addEventListener('submit', submitData);
 
-function submitDetails(e) {
+function submitData(e){
     e.preventDefault();
-    var task = document.getElementById('Todotask').value;
-    var details = document.getElementById('Details').value;
-
-    var dataOfTodo = {
-        task: task,
-        details: details
+    var taskk = document.getElementById('Todotask').value;
+    var detail = document.getElementById('Details').value;
+    var objData = {
+        taskk: taskk,
+        detail: detail
     };
-
-    axios.post("https://crudcrud.com/api/b196a8de9016465985029dd78a5e236d/todoData", dataOfTodo)
-        .then((response) => {
-            console.log(response);
-            displayData(response.data);
-        })
-        .catch(err => console.log(err));
+    axios
+    .post("https://crudcrud.com/api/546b62827fc6435190a56f00a1af4844/TodoData",objData)
+    .then((response)=>{
+       // console.log(response.data);
+        displayData(response.data);
+    })
+    .catch((error)=>{
+        console.log(error);
+    })
+form.reset();
 }
 
-function deletetodo(event) {
-    var li = event.target.parentElement;
-    var ID = li.getAttribute('list-item-id');
-
-    // Making axios request to delete details from server
-    axios.delete(`https://crudcrud.com/api/b196a8de9016465985029dd78a5e236d/todoData/${ID}`)
-        .then(() => {
+function deleteToDo(e){
+    var li = e.target.parentElement;
+    var ID = li.getAttribute('data-user-id');
+    //console.log(ID);
+    axios.delete(`https://crudcrud.com/api/546b62827fc6435190a56f00a1af4844/TodoData/${ID}`)
+       .then(()=>{
             li.remove();
         })
         .catch((error) => {
             console.log(error);
-        });
+        })
 }
-
-function displayData(object) {
+    
+    
+function displayData(objct){
+    //console.log(objct)
     var li = document.createElement('li');
-    li.className = 'list-item';
-    
-    var task = object.task;
-    var details = object.details;
-    var id = object._id;
+    li.className = 'list-group-item';
+    var task= objct.taskk;
+    var detail= objct.detail;
+    var taskID= objct._id;
 
-    
-    li.setAttribute('list-item-id', id);
+    li.setAttribute('data-user-id', taskID);
 
-    li.appendChild(document.createTextNode(task));
+    var liname = document.createTextNode(task)
+    li.appendChild(liname);
     li.appendChild(document.createElement('br'));
-    li.appendChild(document.createTextNode(details));
+    li.appendChild(document.createTextNode(detail));
 
     var deleteButton = document.createElement('button');
-    deleteButton.textContent = 'remove';
-    deleteButton.addEventListener('click', deletetodo);
+    deleteButton.textContent = 'delete';
+    deleteButton.addEventListener('click',deleteToDo);
     li.appendChild(deleteButton);
 
-    var List = document.getElementById('tasks');
-    List.appendChild(li);
+    var userList = document.getElementById('tasks');
+    userList.appendChild(li);
+}  
+
+function fetchToDoData() {
+    axios.get("https://crudcrud.com/api/546b62827fc6435190a56f00a1af4844/TodoData")
+        .then((response) => {
+            for (var i = 0; i < response.data.length; i++) {
+                displayData(response.data[i]);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
